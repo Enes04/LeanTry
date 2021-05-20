@@ -111,8 +111,7 @@ namespace Lean.Touch
 		private void TranslateUI(Vector2 screenDelta)
 		{
 			var camera = this._camera;
-			Vector2 deviceResolotion = new Vector2(Screen.width, Screen.height);
-			
+
 			if (camera == null)
 			{
 				var canvas = transform.GetComponentInParent<Canvas>();
@@ -125,7 +124,7 @@ namespace Lean.Touch
 
 			// Screen position of the transform
 			var screenPoint = RectTransformUtility.WorldToScreenPoint(camera, transform.position);
-			
+
 			// Add the deltaPosition
 			screenPoint += screenDelta * Sensitivity;
 
@@ -142,7 +141,7 @@ namespace Lean.Touch
 		{
 			// Make sure the camera exists
 			var camera = LeanHelper.GetCamera(this._camera, gameObject);
-			
+
 			if (camera != null)
 			{
 				// Screen position of the transform

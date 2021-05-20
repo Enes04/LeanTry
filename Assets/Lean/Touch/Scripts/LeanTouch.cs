@@ -6,13 +6,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using Lean.Common;
-using UnityEngine.UI;
-
 using FSA = UnityEngine.Serialization.FormerlySerializedAsAttribute;
 
 namespace Lean.Touch
 {
-
 	/// <summary>If you add this component to your scene, then it will convert all mouse and touch data into easy to use data.
 	/// You can access this data via Lean.Touch.LeanTouch.Instance.Fingers, or hook into the Lean.Touch.LeanTouch.On___ events.
 	/// NOTE: If you experience a one frame input delay you should edit your ScriptExecutionOrder to force this script to update before your other scripts.</summary>
@@ -30,7 +27,7 @@ namespace Lean.Touch
 		public const string PlusHelpUrlPrefix = "https://carloswilkes.github.io/Documentation/LeanTouchPlus#";
 
 		public const int MOUSE_FINGER_INDEX = -1;
-		
+
 		public const int HOVER_FINGER_INDEX = -42;
 
 		private const int DEFAULT_REFERENCE_DPI = 200;
@@ -85,8 +82,7 @@ namespace Lean.Touch
 
 		/// <summary>This allows you to set how many seconds are required between a finger down/up for a tap to be registered.</summary>
 		public float TapThreshold { set { tapThreshold = value; } get { return tapThreshold; } } [FSA("TapThreshold")] [SerializeField] private float tapThreshold = DEFAULT_TAP_THRESHOLD;
-		
-		
+
 		public static float CurrentTapThreshold
 		{
 			get
@@ -488,7 +484,7 @@ namespace Lean.Touch
 					finger.LastSet            = finger.Set;
 					finger.LastPressure       = finger.Pressure;
 					finger.LastScreenPosition = finger.ScreenPosition;
-				
+
 					finger.Set   = false;
 					finger.Tap   = false;
 					finger.Swipe = false;
@@ -652,7 +648,7 @@ namespace Lean.Touch
 		public LeanFinger AddFinger(int index, Vector2 screenPosition, float pressure, bool set)
 		{
 			var finger = FindFinger(index);
-			
+
 			// Finger is already active, so remove it from the missing collection
 			if (finger != null)
 			{
@@ -709,7 +705,7 @@ namespace Lean.Touch
 				finger.LastScreenPosition  = screenPosition;
 				finger.LastPressure        = pressure;
 				finger.StartedOverGui      = PointOverGui(screenPosition);
-				
+
 				Fingers.Add(finger);
 			}
 
@@ -816,7 +812,6 @@ namespace Lean.Touch
 namespace Lean.Touch.Editor
 {
 	using UnityEditor;
-	using UnityEngine.UI;
 	using TARGET = LeanTouch;
 
 	[UnityEditor.CustomEditor(typeof(TARGET))]
@@ -825,7 +820,7 @@ namespace Lean.Touch.Editor
 		private static List<LeanFinger> allFingers = new List<LeanFinger>();
 
 		private static GUIStyle fadingLabel;
-		
+
 		public static event System.Action<TARGET> OnExtendInspector;
 
 		[System.NonSerialized] TARGET tgt; [System.NonSerialized] TARGET[] tgts;
@@ -908,7 +903,6 @@ namespace Lean.Touch.Editor
 
 		private void DrawFingers(LeanTouch touch)
 		{
-			
 			EditorGUILayout.LabelField(new GUIContent("Fingers", "Index - State - Taps - X, Y - Age"), EditorStyles.boldLabel);
 
 			allFingers.Clear();
@@ -931,50 +925,12 @@ namespace Lean.Touch.Editor
 					if (finger.Up       == true ) state = "UP";
 					if (finger.IsActive == false) state = "INACTIVE";
 					if (finger.Expired  == true ) state = "EXPIRED";
-				
-						GameObject t = GameObject.FindGameObjectWithTag("Player");
-						GameObject t2 = GameObject.FindGameObjectWithTag("Player2");
 
-						t.GetComponent<Text>().text = ((Mathf.FloorToInt(screenPosition.x)*100)/Screen.width).ToString();
-						t2.GetComponent<Text>().text = ((Mathf.FloorToInt(screenPosition.y)*100)/Screen.height).ToString();
-					
 					EditorGUILayout.LabelField(finger.Index + " - " + state + " - " + finger.TapCount + "  + " + Mathf.FloorToInt(screenPosition.x) + ", " + Mathf.FloorToInt(screenPosition.y) + ") - " + finger.Age.ToString("0.0"), style);
-					
 				}
 			}
 		}
-		
-		public void leantouchdrag(LeanTouch touch)
-        {			
-			EditorGUILayout.LabelField(new GUIContent("Fingers", "Index - State - Taps - X, Y - Age"), EditorStyles.boldLabel);
 
-			allFingers.Clear();
-			allFingers.AddRange(LeanTouch.Fingers);
-			allFingers.AddRange(LeanTouch.InactiveFingers);
-			allFingers.Sort((a, b) => a.Index.CompareTo(b.Index));
-
-			for (var i = 0; i < allFingers.Count; i++)
-			{
-				var finger = allFingers[i];
-				var progress = touch.TapThreshold > 0.0f ? finger.Age / touch.TapThreshold : 0.0f;
-				var style = GetFadingLabel(finger.Set, progress);
-
-				if (style.normal.textColor.a > 0.0f)
-				{
-					var screenPosition = finger.ScreenPosition;
-					var state = "UPDATE";
-
-					if (finger.Down == true) state = "DOWN";
-					if (finger.Up == true) state = "UP";
-					if (finger.IsActive == false) state = "INACTIVE";
-					if (finger.Expired == true) state = "EXPIRED";
-
-					EditorGUILayout.LabelField(finger.Index + " - " + state + " - " + finger.TapCount + "  + " + Mathf.FloorToInt(screenPosition.x) + ", " + Mathf.FloorToInt(screenPosition.y) + ") - " + finger.Age.ToString("0.0"), style);
-					
-				}
-			}
-		}
-	
 		private static GUIStyle GetFadingLabel(bool active, float progress)
 		{
 			if (fadingLabel == null)
@@ -986,7 +942,7 @@ namespace Lean.Touch.Editor
 			var b = a; b.a = active == true ? 0.5f : 0.0f;
 
 			fadingLabel.normal.textColor = Color.Lerp(a, b, progress);
-			
+
 			return fadingLabel;
 		}
 	}

@@ -655,5 +655,10 @@ namespace Lean.Touch
 
 			return false;
 		}
-	}
+
+        public static Vector2 GetScreenDelta(object fingers)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }

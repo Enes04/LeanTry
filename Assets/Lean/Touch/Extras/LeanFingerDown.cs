@@ -10,7 +10,6 @@ namespace Lean.Touch
 	[AddComponentMenu(LeanTouch.ComponentPathPrefix + "Finger Down")]
 	public class LeanFingerDown : MonoBehaviour
 	{
-		
 		[System.Serializable] public class LeanFingerEvent : UnityEvent<LeanFinger> {}
 		[System.Serializable] public class Vector3Event : UnityEvent<Vector3> {}
 		[System.Serializable] public class Vector2Event : UnityEvent<Vector2> {}
